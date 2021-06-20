@@ -59,12 +59,12 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return
         const { data: res } = await this.$http.post('login', this.form)
-        if (res.meta.status === 200) {
+        if (res.meta.status !== 200) {
+          this.$message.error(res.meta.msg)
+        } else {
           this.$message.success(res.meta.msg)
           window.sessionStorage.setItem('token', res.data.token)
           this.$router.push('/home')
-        } else {
-          this.$message.error(res.meta.msg)
         }
       })
     }
